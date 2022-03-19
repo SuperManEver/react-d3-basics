@@ -1,6 +1,6 @@
 import "./App.css";
 
-import Chart from "./chart";
+import Chart from "./components/chart";
 
 import css from "./styles.module.css";
 
