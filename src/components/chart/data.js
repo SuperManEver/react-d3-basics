@@ -1,4 +1,4 @@
-export const data = [
+export const temperatures = [
   {
     date: "2016-12-31T19:00:00.000Z",
     high: 54,
