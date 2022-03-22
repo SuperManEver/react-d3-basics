@@ -13,7 +13,7 @@ class VolumeChart extends Component {
   }
 
   componentDidMount() {
-    let rect_width = 2;
+    let rect_width = 18;
 
     const svg = d3
       .select(this.myRef.current)
@@ -26,10 +26,14 @@ class VolumeChart extends Component {
       .data(this.bars)
       .enter()
       .append("rect")
-      .attr("x", (d, i) => d.x + rect_width)
+      .attr("x", (d, i) => d.x + (i * rect_width) / 1.2)
       .attr("y", (d) => d.y)
       .attr("width", rect_width)
-      .attr("height", (d) => d.height);
+      .attr("height", (d) => d.height)
+      .attr("fill", "red")
+      .attr("fill-opacity", 0.5)
+      .attr("stroke", "red")
+      .attr("stroke-width", 2);
   }
 
   get points() {
