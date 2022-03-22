@@ -69,10 +69,13 @@ class LineChart extends Component {
 
   get chartLine() {
     const xExtent = d3.extent(this.points, (p) => p.timestamp);
-    const xScale = d3.scaleTime().domain(xExtent).range([0, this.width]);
+    const xScale = d3.scaleTime().domain(xExtent).range([2, this.width]);
 
     const yExtent = d3.extent(this.points, (p) => p.price);
-    const yScale = d3.scaleLinear().domain(yExtent).range([0, this.height]);
+    const yScale = d3
+      .scaleLinear()
+      .domain(yExtent)
+      .range([0, this.height - 2]);
 
     const path = d3
       .line()
