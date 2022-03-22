@@ -1,6 +1,6 @@
 import "./App.css";
 
-import Chart from "./components/chart";
+import LineChart from "./components/line-chart";
 
 import css from "./styles.module.css";
 
@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <div className={css.root}>
-        <Chart />
+        <LineChart />
       </div>
     </div>
   );
