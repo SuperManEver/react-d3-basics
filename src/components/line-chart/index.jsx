@@ -14,10 +14,14 @@ class LineChart extends Component {
   constructor(props) {
     super(props);
     this.myRef = React.createRef();
+
+    this.margin = { top: 10, right: 30, bottom: 30, left: 40 };
+    this.width = WIDTH - this.margin.left - this.margin.right;
+    this.height = HEIGHT - this.margin.top - this.margin.bottom;
   }
 
   componentDidMount() {
-    const margin = { top: 10, right: 30, bottom: 30, left: 60 },
+    const margin = { top: 10, right: 30, bottom: 30, left: 40 },
       width = WIDTH - margin.left - margin.right,
       height = HEIGHT - margin.top - margin.bottom;
 
@@ -65,10 +69,10 @@ class LineChart extends Component {
 
   get chartLine() {
     const xExtent = d3.extent(this.points, (p) => p.timestamp);
-    const xScale = d3.scaleTime().domain(xExtent).range([0, WIDTH]);
+    const xScale = d3.scaleTime().domain(xExtent).range([0, this.width]);
 
     const yExtent = d3.extent(this.points, (p) => p.price);
-    const yScale = d3.scaleLinear().domain(yExtent).range([0, HEIGHT]);
+    const yScale = d3.scaleLinear().domain(yExtent).range([0, this.height]);
 
     const path = d3
       .line()
