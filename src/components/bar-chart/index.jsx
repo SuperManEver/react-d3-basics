@@ -60,8 +60,6 @@ class Chart extends Component {
 
     const points = this.calculatePoints();
 
-    console.log(points);
-
     let svg = d3
       .select(this.myRef.current)
       .append("svg")
