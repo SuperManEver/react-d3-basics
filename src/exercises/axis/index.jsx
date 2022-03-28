@@ -7,6 +7,17 @@ const WIDTH = 650;
 const HEIGHT = 400;
 const margin = { top: 20, right: 5, bottom: 20, left: 35 };
 
+function round(num, decimalPlaces = 0) {
+  if (num < 0) return -round(-num, decimalPlaces);
+  var p = Math.pow(10, decimalPlaces);
+  var n = num * p;
+  var f = n - Math.floor(n);
+  var e = Number.EPSILON * n;
+
+  // Determine whether this fraction is a midpoint value.
+  return f >= 0.5 - e ? Math.ceil(n) / p : Math.floor(n) / p;
+}
+
 class Axis extends Component {
   state = {
     bars: [],
@@ -63,6 +74,7 @@ class Axis extends Component {
   componentDidMount() {
     this.drawXAxis();
     this.drawYAxis();
+    this.drawAverageLine();
   }
 
   drawLine() {
@@ -100,6 +112,38 @@ class Axis extends Component {
     }
   }
 
+  drawAverageLine() {
+    const { data } = this.props;
+
+    const yExtent = d3.extent(data, (p) => p.avg);
+    const yScale = d3
+      .scaleLinear()
+      .domain(yExtent)
+      .range([0, HEIGHT - 100]);
+
+    return d3
+      .line()
+      .x((d) => this.xScale(d.date))
+      .y(() => yScale(this.average));
+  }
+
+  get average() {
+    const { data } = this.props;
+
+    return d3.mean(data.map((d) => d.avg));
+  }
+
+  get xScale() {
+    const { data } = this.props;
+
+    const xExtent = d3.extent(data, (p) => p.date);
+
+    return d3
+      .scaleTime()
+      .domain(xExtent)
+      .range([2, WIDTH - margin.right]);
+  }
+
   get chartLine() {
     const { data } = this.props;
 
@@ -124,6 +168,14 @@ class Axis extends Component {
   }
 
   render() {
+    const { data } = this.props;
+
+    const yExtent = d3.extent(data, (p) => p.avg);
+    const yScale = d3
+      .scaleLinear()
+      .domain(yExtent)
+      .range([0, HEIGHT - 100]);
+
     return (
       <svg width={WIDTH} height={HEIGHT}>
         <g ref={this.yAxis} transform={`translate(${margin.left}, 0)`} />
@@ -140,6 +192,27 @@ class Axis extends Component {
           fill="none"
           transform={`translate(${margin.left}, ${margin.top})`}
         />
+
+        <g transform={`translate(${margin.left}, ${margin.top})`}>
+          <g transform={`translate(${-1 * margin.left}, 0)`}>
+            <text x={0} y={yScale(this.average) - 10}>
+              {round(this.average, 2)}
+            </text>
+          </g>
+
+          <text x="10" y={yScale(this.average) - 10}>
+            hello world
+          </text>
+
+          <path
+            d={this.drawAverageLine()(data)}
+            fill="none"
+            stroke="steelblue"
+            strokeWidth="1.5"
+            strokeMiterlimit="1"
+            strokeDasharray="4 1"
+          ></path>
+        </g>
       </svg>
     );
   }
