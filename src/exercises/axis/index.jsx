@@ -3,9 +3,11 @@ import * as d3 from "d3";
 
 import data from "./data";
 
+import css from "./style.module.css";
+
 const WIDTH = 650;
 const HEIGHT = 400;
-const margin = { top: 20, right: 5, bottom: 20, left: 35 };
+const margin = { top: 20, right: 40, bottom: 20, left: 45 };
 
 function round(num, decimalPlaces = 0) {
   if (num < 0) return -round(-num, decimalPlaces);
@@ -194,8 +196,21 @@ class Axis extends Component {
         />
 
         <g transform={`translate(${margin.left}, ${margin.top})`}>
-          <g transform={`translate(${-1 * margin.left}, 0)`}>
-            <text x={0} y={yScale(this.average) - 10}>
+          <g
+            transform={`translate(${-1 * (margin.left - 5)}, ${yScale(
+              this.average
+            )})`}
+          >
+            <rect
+              x="-3"
+              y="-15"
+              rx="4"
+              width="40px"
+              height="26"
+              fill="#2F2E31"
+              fillOpacity="0.9"
+            ></rect>
+            <text className={css.labelText} x={2} y={2}>
               {round(this.average, 2)}
             </text>
           </g>
